@@ -1,0 +1,223 @@
+﻿@{
+	ViewData["Title"] = "Home Page (首頁)";
+
+	Func<dynamic, object> UI_New =
+	@<div>this is @@dynamic Func<p>@item.Name  @item.Age</p></div>;
+
+	ViewData["UI"] = UI_New;
+
+	List<StudentViewModel> students = new List<StudentViewModel>()
+	{
+		new  StudentViewModel(){ Name="David",Age = 20 },
+		new  StudentViewModel(){ Name="Amy",Age = 30 }
+	};
+	
+
+}
+
+<div class="text-center">
+	<h1 class="display-4">Welcome at @ViewData["Title"]</h1>
+	<div id="vueAppDiv">
+		<!-- Vue 綁定的內容 -->
+		<p>{{ message }}</p>
+		<button v-on:click="changeMessage">Click Me</button>
+		<input v-model="user.name" placeholder="Enter your name" />
+		<p>{{ user.name }}</p>
+		<input v-model="user.age" type="number" placeholder="Enter your age" />
+		<p>{{ user.age }}</p>
+		<br>
+		<p>使用 computed: {{combineStr}}</p>
+		<br>
+
+		@await Html.PartialAsync("_partialViewForVueTemplate", students)
+
+
+		@await Component.InvokeAsync("LatestNews")
+	</div>
+
+</div>
+
+@* 使用的 Vue 版本 *@
+@* <script src="~/js/vue2.js"></script> *@
+<script src="~/js/vue3.js"></script>
+<script type="text/javascript">console.log(Vue.version)</script>
+
+@* 撰寫的 Vue 語法 *@
+<script nonce="" type="text/javascript">
+
+	// 建立 Vue 2
+	// Option API，使用 new Vue()
+	var app = new Vue({
+		// 綁定的元素
+		el: '#vueAppDiv',
+
+		// 如果是用 new Vue 建立的，可以使用 data:{}，不然再 SCF 要使用 data():{return{}}
+		// 但為了整合 Vue 3，建議還是用 data():{return{}}
+		data() {
+			return {
+				message: 'Hello from Vue 2',
+				user: {
+					name: '',
+					age: null
+				},
+				fruits: ["apple","banana","grava"]
+			}
+		},
+
+		methods: {
+			changeMessage: function () {
+				this.message = 'Message changed!';
+			}
+		},
+
+		// 需要回傳 Function，ES 5 寫法為 mounted: function () {}、
+		// ES 6 寫法為 mounted() {}
+		mounted: function () {
+			// 在元件掛載完成後執行
+			console.log('Vue App 已經掛載完成');
+			this.message = 'Vue App mounted successfully!';
+		},
+
+		watch: {
+			// 監聽 user 物件的變化，deep:true 表示深度監聽物件內部屬性
+			user: {
+				handler(newVal, oldVal) {
+					console.log('User data changed:', newVal);
+				},
+				deep: true
+			},
+			// 監聽 message 的變化，不需要使用深度監聽
+			message(newVal, oldVal) {
+				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+			}
+		},
+
+		computed: {
+			// 會根據 message 和 user.name 自動更新
+			combineStr() {
+				return this.message + ' ' + this.user.name
+			},
+		}
+
+	});
+
+
+
+	//---------- 分隔線 -------------
+
+
+
+	// 建立 Vue 3
+	// Option API，使用 Vue.createApp
+	const app = Vue.createApp({
+		// Vue 3 Options API 當中，data 必須是一個函式，回傳物件
+		data() {
+			return {
+				message: 'Hello from Vue 3',
+				user: {
+					name: '',
+					age: null
+				},
+				fruits: ["apple","banana","grava"]
+			}
+		},
+		methods: {
+			changeMessage() {
+				this.message = 'Message changed!'
+			}
+		},
+		mounted() {
+			// 在元件掛載完成後執行
+			console.log('Vue App 已經掛載完成');
+			this.message = 'Vue App mounted successfully!';
+		},
+		watch: {
+			// 監聽 user 物件的變化，deep:true 表示深度監聽
+			user: {
+				handler(newVal, oldVal) {
+					console.log('User data changed:', newVal);
+				},
+				deep: true
+			},
+			// 監聽 message 的變化
+			message(newVal, oldVal) {
+				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+			}
+		},
+
+		computed: {
+			// 會根據 message 和 user.name 自動更新
+			combineStr() {
+				return this.message + ' ' + this.user.name
+			},
+		}
+
+	});
+	// 進行元件掛載到特定元素
+	app.mount('#vueAppDiv');
+
+
+
+	//---------- 分隔線 -------------
+
+
+
+	// 建立 Vue 3
+	// Composition API，
+	// 引入
+	const { ref, reactive, computed, watch, onMounted } = Vue;
+
+	const app = Vue.createApp({
+		setup() {
+			// state：變數
+			// ref 使用 單一變數，存取需使用 value
+			const message = ref('Hello from Vue 3');
+			// reactive 使用 複雜變數(物件、陣列)，存取不需使用 value，直接使用該物件
+			const user = reactive({
+				name: '',
+				age: null
+			});
+			const fruits = reactive(["apple", "banana", "grava"]);
+
+			// methods
+			const changeMessage = () => {
+				message.value = 'Message changed!';
+			};
+
+			// lifecycle
+			// OnMounted 就不用回傳了
+			onMounted(() => {
+				console.log('Vue App 已經掛載完成');
+				message.value = 'Vue App mounted successfully!';
+			});
+
+			// watchers
+			// watch 就不用回傳了
+			watch(user, (newVal, oldVal) => {
+				console.log('User data changed:', newVal);
+			}, { deep: true });
+
+			watch(message, (newVal, oldVal) => {
+				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+			});
+
+			// computed
+			const combineStr = computed(() => {
+				return message.value + ' ' + user.name;
+			});
+
+			// return to template
+			return {
+				message,
+				user,
+				fruits,
+				changeMessage,
+				combineStr
+			};
+		}
+	});
+
+	// 進行元件掛載到特定元素
+	app.mount('#vueAppDiv');
+
+</script>

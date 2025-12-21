@@ -1,0 +1,6 @@
+.vs/
+WebApplication1/bin
+WebApplication1/obj
+WebApplication1/Properties
+WebApplication1/appsetting*
+WebApplication1/*.user

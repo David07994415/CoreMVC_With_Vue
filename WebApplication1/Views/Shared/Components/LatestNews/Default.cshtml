@@ -1,0 +1,11 @@
+﻿@model List<string>
+
+<div class="latest-news">
+    <h3>最新消息(Component Page)</h3>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</div>

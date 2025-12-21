@@ -1,0 +1,28 @@
+﻿@model List<StudentViewModel>
+@{
+	var templateUI = (Func<dynamic, object>)ViewData["UI"];
+}
+<div>this is partialViewForVueTemplate</div>
+<div>不需要使用 template tag</div>
+@* <template> *@
+	<div>
+		<ul>
+			<li v-for="(item,index) in fruits" v-bind:key="index">index：{{index}} ==> 名稱：{{item}}</li>
+		</ul>
+	</div>
+@* </template> *@
+
+<div>使用 Func Delegate</div>
+@foreach (var student in Model)
+{
+	@templateUI(student)
+}
+
+@* 另外一種很難看的寫法 *@
+@* @model dynamic
+<ul>
+@foreach (var pet in Model.Pets)
+{
+    @Model.PetTemplate(pet)
+}
+</ul> *@
