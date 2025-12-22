@@ -31,8 +31,12 @@
 
 		@await Html.PartialAsync("_partialViewForVueTemplate", students)
 
-
 		@await Component.InvokeAsync("LatestNews")
+
+		<hr />
+		@* 這是嘗試使用註冊的元件，一定要放在 el: '#vueAppDiv', 裡面*@
+		<hello-world msg="這是傳入的訊息prop"></hello-world>
+
 	</div>
 
 </div>
@@ -42,119 +46,72 @@
 <script src="~/js/vue3.js"></script>
 <script type="text/javascript">console.log(Vue.version)</script>
 
+@* 嘗試加入 Component *@
+@* Vue2 一定要在 vue2.js 後面、new Vue前面*@
+@* <script src="~/js/components/helloWorldVue2Component.js" type="text/javascript"></script> *@
+
+@* 嘗試透過 Module 加入 Component *@
+@* Vue3 要有一定的順序*@
+<script type="module" src="~/js/moduleTest/MainModule.js" asp-append-version="true"></script>
+
 @* 撰寫的 Vue 語法 *@
 <script nonce="" type="text/javascript">
 
-	// 建立 Vue 2
-	// Option API，使用 new Vue()
-	var app = new Vue({
-		// 綁定的元素
-		el: '#vueAppDiv',
+	// // 建立 Vue 2
+	// // Option API，使用 new Vue()
+	// var app = new Vue({
+	// 	// 綁定的元素
+	// 	el: '#vueAppDiv',
 
-		// 如果是用 new Vue 建立的，可以使用 data:{}，不然再 SCF 要使用 data():{return{}}
-		// 但為了整合 Vue 3，建議還是用 data():{return{}}
-		data() {
-			return {
-				message: 'Hello from Vue 2',
-				user: {
-					name: '',
-					age: null
-				},
-				fruits: ["apple","banana","grava"]
-			}
-		},
+	// 	// 如果是用 new Vue 建立的，可以使用 data:{}，不然再 SCF 要使用 data():{return{}}
+	// 	// 但為了整合 Vue 3，建議還是用 data():{return{}}
+	// 	data() {
+	// 		return {
+	// 			message: 'Hello from Vue 2',
+	// 			user: {
+	// 				name: '',
+	// 				age: null
+	// 			},
+	// 			fruits: ["apple","banana","grava"]
+	// 		}
+	// 	},
 
-		methods: {
-			changeMessage: function () {
-				this.message = 'Message changed!';
-			}
-		},
+	// 	methods: {
+	// 		changeMessage: function () {
+	// 			this.message = 'Message changed!';
+	// 		}
+	// 	},
 
-		// 需要回傳 Function，ES 5 寫法為 mounted: function () {}、
-		// ES 6 寫法為 mounted() {}
-		mounted: function () {
-			// 在元件掛載完成後執行
-			console.log('Vue App 已經掛載完成');
-			this.message = 'Vue App mounted successfully!';
-		},
+	// 	// 需要回傳 Function，ES 5 寫法為 mounted: function () {}、
+	// 	// ES 6 寫法為 mounted() {}
+	// 	mounted: function () {
+	// 		// 在元件掛載完成後執行
+	// 		console.log('Vue App 已經掛載完成');
+	// 		this.message = 'Vue App mounted successfully!';
+	// 	},
 
-		watch: {
-			// 監聽 user 物件的變化，deep:true 表示深度監聽物件內部屬性
-			user: {
-				handler(newVal, oldVal) {
-					console.log('User data changed:', newVal);
-				},
-				deep: true
-			},
-			// 監聽 message 的變化，不需要使用深度監聽
-			message(newVal, oldVal) {
-				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
-			}
-		},
+	// 	watch: {
+	// 		// 監聽 user 物件的變化，deep:true 表示深度監聽物件內部屬性
+	// 		user: {
+	// 			handler(newVal, oldVal) {
+	// 				console.log('User data changed:', newVal);
+	// 			},
+	// 			deep: true
+	// 		},
+	// 		// 監聽 message 的變化，不需要使用深度監聽
+	// 		message(newVal, oldVal) {
+	// 			console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+	// 		}
+	// 	},
 
-		computed: {
-			// 會根據 message 和 user.name 自動更新
-			combineStr() {
-				return this.message + ' ' + this.user.name
-			},
-		}
+	// 	computed: {
+	// 		// 會根據 message 和 user.name 自動更新
+	// 		combineStr() {
+	// 			return this.message + ' ' + this.user.name
+	// 		},
+	// 	}
 
-	});
-
-
-
-	//---------- 分隔線 -------------
-
-
-
-	// 建立 Vue 3
-	// Option API，使用 Vue.createApp
-	const app = Vue.createApp({
-		// Vue 3 Options API 當中，data 必須是一個函式，回傳物件
-		data() {
-			return {
-				message: 'Hello from Vue 3',
-				user: {
-					name: '',
-					age: null
-				},
-				fruits: ["apple","banana","grava"]
-			}
-		},
-		methods: {
-			changeMessage() {
-				this.message = 'Message changed!'
-			}
-		},
-		mounted() {
-			// 在元件掛載完成後執行
-			console.log('Vue App 已經掛載完成');
-			this.message = 'Vue App mounted successfully!';
-		},
-		watch: {
-			// 監聽 user 物件的變化，deep:true 表示深度監聽
-			user: {
-				handler(newVal, oldVal) {
-					console.log('User data changed:', newVal);
-				},
-				deep: true
-			},
-			// 監聽 message 的變化
-			message(newVal, oldVal) {
-				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
-			}
-		},
-
-		computed: {
-			// 會根據 message 和 user.name 自動更新
-			combineStr() {
-				return this.message + ' ' + this.user.name
-			},
-		}
-
-	});
-	// 進行元件掛載到特定元素
-	app.mount('#vueAppDiv');
+	// });
 
 
 
@@ -162,62 +119,117 @@
 
 
 
-	// 建立 Vue 3
-	// Composition API，
-	// 引入
-	const { ref, reactive, computed, watch, onMounted } = Vue;
+	// // 建立 Vue 3
+	// // Option API，使用 Vue.createApp
+	// const app = Vue.createApp({
+	// 	// Vue 3 Options API 當中，data 必須是一個函式，回傳物件
+	// 	data() {
+	// 		return {
+	// 			message: 'Hello from Vue 3',
+	// 			user: {
+	// 				name: '',
+	// 				age: null
+	// 			},
+	// 			fruits: ["apple","banana","grava"]
+	// 		}
+	// 	},
+	// 	methods: {
+	// 		changeMessage() {
+	// 			this.message = 'Message changed!'
+	// 		}
+	// 	},
+	// 	mounted() {
+	// 		// 在元件掛載完成後執行
+	// 		console.log('Vue App 已經掛載完成');
+	// 		this.message = 'Vue App mounted successfully!';
+	// 	},
+	// 	watch: {
+	// 		// 監聽 user 物件的變化，deep:true 表示深度監聽
+	// 		user: {
+	// 			handler(newVal, oldVal) {
+	// 				console.log('User data changed:', newVal);
+	// 			},
+	// 			deep: true
+	// 		},
+	// 		// 監聽 message 的變化
+	// 		message(newVal, oldVal) {
+	// 			console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+	// 		}
+	// 	},
 
-	const app = Vue.createApp({
-		setup() {
-			// state：變數
-			// ref 使用 單一變數，存取需使用 value
-			const message = ref('Hello from Vue 3');
-			// reactive 使用 複雜變數(物件、陣列)，存取不需使用 value，直接使用該物件
-			const user = reactive({
-				name: '',
-				age: null
-			});
-			const fruits = reactive(["apple", "banana", "grava"]);
+	// 	computed: {
+	// 		// 會根據 message 和 user.name 自動更新
+	// 		combineStr() {
+	// 			return this.message + ' ' + this.user.name
+	// 		},
+	// 	}
 
-			// methods
-			const changeMessage = () => {
-				message.value = 'Message changed!';
-			};
+	// });
+	// // 進行元件掛載到特定元素
+	// app.mount('#vueAppDiv');
 
-			// lifecycle
-			// OnMounted 就不用回傳了
-			onMounted(() => {
-				console.log('Vue App 已經掛載完成');
-				message.value = 'Vue App mounted successfully!';
-			});
 
-			// watchers
-			// watch 就不用回傳了
-			watch(user, (newVal, oldVal) => {
-				console.log('User data changed:', newVal);
-			}, { deep: true });
 
-			watch(message, (newVal, oldVal) => {
-				console.log(`Message changed from "${oldVal}" to "${newVal}"`);
-			});
+	//---------- 分隔線 -------------
 
-			// computed
-			const combineStr = computed(() => {
-				return message.value + ' ' + user.name;
-			});
 
-			// return to template
-			return {
-				message,
-				user,
-				fruits,
-				changeMessage,
-				combineStr
-			};
-		}
-	});
 
-	// 進行元件掛載到特定元素
-	app.mount('#vueAppDiv');
+	// // 建立 Vue 3
+	// // Composition API，
+	// // 引入
+	// const { ref, reactive, computed, watch, onMounted } = Vue;
+
+	// const app = Vue.createApp({
+	// 	setup() {
+	// 		// state：變數
+	// 		// ref 使用 單一變數，存取需使用 value
+	// 		const message = ref('Hello from Vue 3');
+	// 		// reactive 使用 複雜變數(物件、陣列)，存取不需使用 value，直接使用該物件
+	// 		const user = reactive({
+	// 			name: '',
+	// 			age: null
+	// 		});
+	// 		const fruits = reactive(["apple", "banana", "grava"]);
+
+	// 		// methods
+	// 		const changeMessage = () => {
+	// 			message.value = 'Message changed!';
+	// 		};
+
+	// 		// lifecycle
+	// 		// OnMounted 就不用回傳了
+	// 		onMounted(() => {
+	// 			console.log('Vue App 已經掛載完成');
+	// 			message.value = 'Vue App mounted successfully!';
+	// 		});
+
+	// 		// watchers
+	// 		// watch 就不用回傳了
+	// 		watch(user, (newVal, oldVal) => {
+	// 			console.log('User data changed:', newVal);
+	// 		}, { deep: true });
+
+	// 		watch(message, (newVal, oldVal) => {
+	// 			console.log(`Message changed from "${oldVal}" to "${newVal}"`);
+	// 		});
+
+	// 		// computed
+	// 		const combineStr = computed(() => {
+	// 			return message.value + ' ' + user.name;
+	// 		});
+
+	// 		// return to template
+	// 		return {
+	// 			message,
+	// 			user,
+	// 			fruits,
+	// 			changeMessage,
+	// 			combineStr
+	// 		};
+	// 	}
+	// });
+
+	// // 進行元件掛載到特定元素
+	// app.mount('#vueAppDiv');
 
 </script>
