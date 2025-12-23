@@ -1,6 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿<!-- 在 cshtml 裡面 -->
+<script type="text/x-template" id="temp">
+    <div>
+        <h2>{{ title }}</h2>
+        <p>{{ message }}</p>
+        <p>來自父層的資料：{{ extra }}</p>
+    </div>
+</script>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div id="app">
+    <!-- 使用 component，傳入 prop -->
+    <my-component extra="這是從父層傳進來的 prop" :someMethod="showMgs"></my-component>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const MyComponent = {
+            template: '#temp',
+            props: {
+                extra: {
+                    type: String,
+                    required: false,
+                    default: '預設值'
+                },
+                someMethod: {
+                    type: Function
+                }
+            },
+            data() {
+                return {
+                    title: '這是 Vue3 Template',
+                    message: '從 cshtml 中載入的內容'
+                }
+            }
+        };
+
+        const app = Vue.createApp({
+            data() { 
+                return { 
+                    msg: '這是父層的變數值' } 
+            },
+            methods: {
+                showMsg(){
+                    console.log("這是父層的 showMsg")
+                }
+            }
+        });
+        app.component('my-component', MyComponent);
+        app.mount('#app');
+
+    </script>
+}
