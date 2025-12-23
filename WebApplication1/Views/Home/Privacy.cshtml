@@ -9,7 +9,7 @@
 
 <div id="app">
     <!-- 使用 component，傳入 prop -->
-    <my-component extra="這是從父層傳進來的 prop" :someMethod="showMgs"></my-component>
+    <my-component :extra="msgObject.msgg" :someMethod="showMgs"></my-component>
 </div>
 
 @section Scripts {
@@ -20,8 +20,8 @@
             props: {
                 extra: {
                     type: String,
-                    required: false,
-                    default: '預設值'
+                    // required: false,
+                    // default: '預設值'
                 },
                 someMethod: {
                     type: Function
@@ -30,7 +30,8 @@
             data() {
                 return {
                     title: '這是 Vue3 Template',
-                    message: '從 cshtml 中載入的內容'
+                    message: '從 cshtml 中載入的內容',
+                    addItem: this.props.extraa
                 }
             }
         };
@@ -38,7 +39,11 @@
         const app = Vue.createApp({
             data() { 
                 return { 
-                    msg: '這是父層的變數值' } 
+                    msgObject: {
+                        msg: "這是父層的變數值",
+                        title:"this is title"
+                    }
+                } 
             },
             methods: {
                 showMsg(){
