@@ -1,0 +1,79 @@
+﻿<div>this is componet page at .net core cshtml</div>
+
+@* Note：這一串要加在 #appId 之前，不然會噴錯 *@
+@await Html.PartialAsync("_partialViewForVueTemplateScript")
+
+@*  Note：不能在 id 外部放入 template *@
+@* <template> *@
+<div id="appId">
+	data msg為：{{msg}}
+	<br/>
+	Note：Vue 2 在 HTML 模板裡使用自訂標籤時，會把 大寫字母轉成小寫並加上連字號
+	<br />
+	並非，Vue2Component，而是 vue2-component
+	<br />
+
+	<template v-if="msg">
+		<p>this is v-if part</p>
+		@* <vue2-component /> *@
+		<vue3-component />
+	</template>
+
+</div>
+@* </template> *@
+
+
+@* 使用的 Vue 版本 *@
+@* <script src="~/js/vue2.js"></script> *@
+<script src="~/js/vue3.js"></script>
+<script type="text/javascript">console.log(Vue.version)</script>
+
+@* 抽離 元件註冊至 Vue2Component.js*@
+@* <script type="text/javascript" src="~/js/components/Vue2Component.js"></script> *@
+<script type="text/javascript">
+	// // // Vue 2 寫法，註冊 component (要早於 new Vue)，可透過 Vue2Component.js 進行註冊
+	// // Vue.component("Vue2Component", {
+	// // 	template: ` <div><div>this is Vue2Component</div> <p>{{ componentStr }}</p></div> `,
+	// // 	props: {
+	// // 		value: {
+	// // 			type: Object,
+	// // 			default: () => {
+	// // 				return {
+	// // 				}
+	// // 			}
+	// // 		}
+	// // 	},
+	// // 	data() {
+	// // 		return {
+	// // 			componentStr: "Vue2Component data Str",
+	// // 			someDataStr: "",
+	// // 		}
+	// // 	},
+	// // 	mounted() {
+	// // 		console.log("Vue2Component mount");
+	// // 		this.someDataStr = this.value.valueStr;
+	// // 	}
+	// // })
+
+	// // Vue 2 寫法，建構
+	// const vue2Obj = new Vue({
+	// 	el: "#appId",
+	// 	data() {
+	// 		return {
+	// 			msg: "this is vue 2 msg data str"
+	// 		}
+	// 	}
+	// })
+	// console.log(vue2Obj)
+
+</script>
+
+@* Vue 3 寫法，先建立 App->註冊元件->進行 App mount*@
+@* Vue3 建立 App *@
+<script type="text/javascript" src="~/js/components/Vue3CreateAppSrcipt.js"></script>
+@* 抽離 元件註冊至 Vue3Component.js*@
+<script type="text/javascript" src="~/js/components/Vue3Component.js"></script>
+@* 進行根元件 mount*@
+<script type="text/javascript">
+	const vue3Obj = window.vue3ObjApp.mount("#appId")
+</script>
