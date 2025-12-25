@@ -10,6 +10,9 @@ Vue.component("vue2-component", {
                 return {
                 }
             }
+        },
+        inProp: {
+            type:String
         }
     },
     data() {

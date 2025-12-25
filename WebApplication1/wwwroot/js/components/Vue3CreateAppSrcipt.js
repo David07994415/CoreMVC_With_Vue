@@ -2,7 +2,8 @@
 const app = Vue.createApp({
 	data() {
 		return {
-			msg: "this is vue 2 msg data str"
+			msg: "this is vue 3 msg data str",
+			someComplexItem: [[1, 2, 3], { ss: 'tt' }]
 		}
 	}
 });

@@ -7,7 +7,7 @@
 @* <template> *@
 <div id="appId">
 	data msg為：{{msg}}
-	<br/>
+	<br />
 	Note：Vue 2 在 HTML 模板裡使用自訂標籤時，會把 大寫字母轉成小寫並加上連字號
 	<br />
 	並非，Vue2Component，而是 vue2-component
@@ -15,8 +15,9 @@
 
 	<template v-if="msg">
 		<p>this is v-if part</p>
-		@* <vue2-component /> *@
-		<vue3-component />
+		@* <vue2-component :in-prop="msg" /> *@
+		<vue3-component :in-prop="msg" :complex-obj="someComplexItem" />
+		Note：Vue 3 當中，模板中使用 kebab-case(in-prop)， 會對應到 JS 的 camelCase(inPorp)
 	</template>
 
 </div>
@@ -40,7 +41,10 @@
 	// // 			default: () => {
 	// // 				return {
 	// // 				}
-	// // 			}
+	// // 			},
+	// // inProp: {
+	// // 	type: String
+	// // }
 	// // 		}
 	// // 	},
 	// // 	data() {
@@ -75,5 +79,5 @@
 <script type="text/javascript" src="~/js/components/Vue3Component.js"></script>
 @* 進行根元件 mount*@
 <script type="text/javascript">
-	const vue3Obj = window.vue3ObjApp.mount("#appId")
+	const vue3obj = window.vue3ObjApp.mount("#appId")
 </script>

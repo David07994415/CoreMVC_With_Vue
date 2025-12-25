@@ -13,6 +13,12 @@ window.vue3ObjApp.component("vue3-component", {
 		},
 		inProp: {
 			type: String,
+		},
+		complexObj: {
+			type: [Array, Object],
+			default() {
+				return  []
+			}
 		}
 	},
 	data() {
@@ -28,7 +34,12 @@ window.vue3ObjApp.component("vue3-component", {
 		console.log(this.someDataStr)
 		console.log(this.inProp)
 		this.someDataStr = this.inProp
-
+		console.log(this.complexObj)
+	},
+	methods: {
+		clickme() {
+			console.log("v-on click me function works")
+		}
 	}
 
 })
