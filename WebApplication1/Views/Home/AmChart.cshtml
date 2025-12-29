@@ -1,0 +1,167 @@
+﻿<div>
+	<h2>this is amChart Page</h2>
+	<div id="amChartDiv" style="width:500px; height:500px"></div>
+
+</div>
+
+
+@* 使用的 Vue 版本 *@
+@* <script src="~/js/vue2.js"></script> *@
+<script src="~/js/vue3.js"></script>
+<script type="text/javascript">console.log(Vue.version)</script>
+
+@* 導入 amChart *@
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/locales/de_DE.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/germanyLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/fonts/notosans-sc.js"></script>
+
+<script type="text/javascript">
+    let divDom = document.getElementById("#amChartDiv");
+
+    // const vue2Obj = new Vue({
+    //     el: '#amChartDiv', // Vue 掛載點
+    //     mounted() {
+    //         // 初始化 amChart
+    //         let root = am5.Root.new("amChartDiv");
+
+    //         // 套用動畫主題
+    //         root.setThemes([am5themes_Animated.new(root)]);
+
+    //         // 建立 XYChart
+    //         let chart = root.container.children.push(
+    //             am5xy.XYChart.new(root, {
+    //                 panX: true,
+    //                 panY: true,
+    //                 wheelX: "panX",
+    //                 wheelY: "zoomX"
+    //             })
+    //         );
+
+    //         // 建立 X 軸 (類別軸)
+    //         let xAxis = chart.xAxes.push(
+    //             am5xy.CategoryAxis.new(root, {
+    //                 categoryField: "category",
+    //                 renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 30 })
+    //             })
+    //         );
+
+    //         // 建立 Y 軸 (數值軸)
+    //         let yAxis = chart.yAxes.push(
+    //             am5xy.ValueAxis.new(root, {
+    //                 renderer: am5xy.AxisRendererY.new(root, {})
+    //             })
+    //         );
+
+    //         // 建立系列
+    //         let series = chart.series.push(
+    //             am5xy.ColumnSeries.new(root, {
+    //                 name: "Series 1",
+    //                 xAxis: xAxis,
+    //                 yAxis: yAxis,
+    //                 valueYField: "value",
+    //                 categoryXField: "category"
+    //             })
+    //         );
+
+    //         // 設定資料
+    //         let data = [
+    //             { category: "A", value: 10 },
+    //             { category: "B", value: 20 },
+    //             { category: "C", value: 15 }
+    //         ];
+
+    //         xAxis.data.setAll(data);
+    //         series.data.setAll(data);
+
+    //         // 動畫顯示
+    //         series.appear(1000);
+    //         chart.appear(1000, 100);
+    //     }
+    // });
+
+    const vue3App = Vue.createApp({
+        mounted() {
+            // 初始化 amChart
+            let root = am5.Root.new("amChartDiv");
+
+            // 套用動畫主題
+            root.setThemes([am5themes_Animated.new(root)]);
+
+            // 建立 XYChart
+            let chart = root.container.children.push(
+                am5xy.XYChart.new(root, {
+                    panX: true,
+                    panY: true,
+                    wheelX: "panX",
+                    wheelY: "zoomX"
+                })
+            );
+
+            // 建立 X 軸 (類別軸)
+            let xAxis = chart.xAxes.push(
+                am5xy.CategoryAxis.new(root, {
+                    categoryField: "category",
+                    renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 30 })
+                })
+            );
+
+            // 建立 Y 軸 (數值軸)
+            let yAxis = chart.yAxes.push(
+                am5xy.ValueAxis.new(root, {
+                    renderer: am5xy.AxisRendererY.new(root, {})
+                })
+            );
+
+            // 建立系列
+            let series = chart.series.push(
+                am5xy.ColumnSeries.new(root, {
+                    name: "Series 1",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: "value",
+                    categoryXField: "category"
+                })
+            );
+
+            // 設定資料
+            let data = [
+                { category: "A", value: 10 },
+                { category: "B", value: 20 },
+                { category: "C", value: 15 }
+            ];
+
+            xAxis.data.setAll(data);
+            series.data.setAll(data);
+
+            // 動畫顯示
+            series.appear(1000);
+            chart.appear(1000, 100);
+
+            // 直接印出來 
+            console.log("Chart object:", chart);
+            window.chart = chart; // 全域存取，可以做為 debugger
+
+            console.log(chart.series); // Series 列表 
+            console.log(chart.series.values); // 目前所有系列物件 
+            console.log(chart.series.values[0].data.values); // 第一個系列的資料
+
+            console.log(chart.xAxes.values); // X 軸物件 
+            console.log(chart.yAxes.values); // Y 軸物件
+
+            console.log(chart.root); // Root 物件 
+            console.log(chart.root.container); // mainContainer
+
+        }
+    });
+    vue3App.mount("#amChartDiv")
+
+
+
+
+
+
+</script>
+
